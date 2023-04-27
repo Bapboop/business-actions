@@ -17,3 +17,26 @@ jobs:
     # We use run to install and test our app
     - run: npm ci
     - run: npm test
+    # New job called build:
+    build:
+      name: Build and Deploy
+      needs: test # Builds only if tests are passed
+      runs-on: ubuntu-latest
+      # Next of this job's steps: (Setup Node.js)
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: use Node 16
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16.x
+        # Install railway CLI in GitHub actions:
+        - name: Install Railway
+          run: npm i -g @railway/cli
+        # Deploy app via the railway up or railway run command:
+        # This will use the Docker file in the project root and build an image for the app
+        - name: Deploy
+          run: railway up
+          env:
+            # Supplies the token from the repository secrets to enable the building via GitHub actions
+            RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
