@@ -1,0 +1,17 @@
+name: Test
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  test:
+      name: Test
+      runs-on: ubuntu-latest
+      # Steps we want to run for the job:
+      steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      # We use run to install and test our app
+      - run: npm ci
+      - run: npm test

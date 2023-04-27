@@ -1,26 +1,14 @@
-name: Test and Deploy
+name: Deploy
 # Defines when to run the action:
 on:
   push:
     branches: [ main ]
 # Workflow
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    # Steps we want to run for the job:
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16.x
-    # We use run to install and test our app
-    - run: npm ci
-    - run: npm test
-    # New job called build:
+  # new job called build
   build:
     name: Build and Deploy
-    needs: test # Builds only if tests are passed
+    # needs: test # Builds only if tests are passed
     runs-on: ubuntu-latest
     # Next of this job's steps: (Setup Node.js)
     steps:
